@@ -9,47 +9,99 @@
     <title>超人電話亭系統 v46</title>
     <style>
         :root { --red: #d0021b; --yellow: #ffcc00; --white: #ffffff; }
+        
         body { 
+            /* 背景：米色底 + 紅色微網格質感 */
+            background-color: #fffaf0;
+            background-image: radial-gradient(#d0021b1a 1px, transparent 1px);
+            background-size: 20px 20px;
             font-family: "Rounded Mplus 1c", "Yu Gothic", "PingFang TC", "微軟正黑體", cursive; 
-            background: #fffaf0; margin: 0; padding: 0; 
+            margin: 0; padding: 0; 
         }
+
         .app-container { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
         .header { background: var(--red); padding: 40px 20px; text-align: center; border-bottom: 8px solid var(--yellow); }
         .header img { max-width: 80%; height: auto; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2)); }
-        .sub-text { font-size: 18px; color: var(--white); margin-top: 15px; font-weight: bold; letter-spacing: 2px; }
-        .search-box { padding: 30px 20px; text-align: center; background: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        
+        .sub-text { 
+            font-size: 18px; 
+            color: var(--white); 
+            margin-top: 15px; 
+            font-weight: bold; 
+            letter-spacing: 2px;
+            /* 霓虹燈效果 */
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow);
+            animation: neon-blink 2s infinite ease-in-out;
+        }
+
+        @keyframes neon-blink {
+            0%, 100% { opacity: 1; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow); }
+            50% { opacity: 0.8; text-shadow: 0 0 2px #fff, 0 0 5px var(--yellow); }
+        }
+
+        .search-box { 
+            padding: 30px 20px; 
+            text-align: center; 
+            background: rgba(255,255,255,0.85); /* 半透明背景，可透出網格 */
+            backdrop-filter: blur(5px); /* 毛玻璃效果 */
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+
         input { 
             width: 100%; padding: 22px; border: 4px solid #ff8d8d; border-radius: 30px;
             font-size: 24px; box-sizing: border-box; outline: none; text-align: center; font-weight: bold; background: #fff9f9;
         }
+
         .btn { 
             width: 100%; background: var(--yellow); color: var(--red); border: none; padding: 22px; border-radius: 30px;
             font-size: 26px; font-weight: 900; margin-top: 15px; cursor: pointer; box-shadow: 0 8px 0px #e6b800; transition: 0.1s;
         }
+
         .btn:active { transform: translateY(6px); box-shadow: 0 2px 0px #e6b800; }
+        
         #resultArea { padding: 20px; flex-grow: 1; }
+        
         .result-item { 
             background: white; border: 3px solid #ffebeb; border-left: 15px solid var(--red); border-radius: 25px;
             padding: 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;
             box-shadow: 0 10px 0px rgba(0,0,0,0.03); animation: slideIn 0.3s ease-out;
-            position: relative;
+            position: relative; transition: 0.3s;
         }
+
         @keyframes slideIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
         .res-info { flex-grow: 1; }
         .res-name { font-size: 22px; font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
         .res-loc { font-size: 28px; font-weight: 900; color: var(--red); background: #fff5f5; padding: 5px 15px; border-radius: 15px; display: inline-block; border: 1px solid #ffdfdf; }
+        .res-loc::before { content: "📍"; margin-right: 5px; font-size: 20px; }
+
         .delete-btn {
             background: #ff4d4d; color: white; border: none; width: 45px; height: 45px;
             border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer;
             margin-left: 15px; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 0px #cc0000; flex-shrink: 0;
         }
-        .delete-btn:active { transform: translateY(2px); box-shadow: 0 2px 0px #cc0000; }
-        .no-result { color: #d0021b; text-align: center; padding: 30px; background: #fff1f1; border-radius: 25px; font-size: 18px; font-weight: bold; border: 2px dashed #ffb3b3; }
-    </style>
-</head>
-<body>
 
+        .result-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(208, 2, 27, 0.1);
+            background: linear-gradient(145deg, #ffffff, #fff5f5);
+        }
+
+        .no-result { color: #d0021b; text-align: center; padding: 30px; background: #fff1f1; border-radius: 25px; font-size: 18px; font-weight: bold; border: 2px dashed #ffb3b3; }
+
+        .removing {
+            background-color: #e6ffec !important; 
+            border-color: #cfffda !important;
+            border-left-color: #34d399 !important;
+            transform: scale(0.5);
+            opacity: 0;
+            transition: 0.3s ease-in;
+        }
+    </style>
 <div class="app-container">
     <div class="header">
         <img src="https://supermanbooth.com.tw/wp-content/uploads/2022/11/super-1-300x141.png" alt="超人電話">
@@ -361,11 +413,10 @@
         });
         document.activeElement.blur();
     }
-    function removeItem(btn) {
+   function removeItem(btn) {
         const item = btn.closest('.result-item');
-        item.style.transform = "scale(0.8)";
-        item.style.opacity = "0";
-        setTimeout(() => { item.remove(); }, 200);
+        item.classList.add('removing'); // 這裡會啟動 CSS 的綠光與消散效果
+        setTimeout(() => { item.remove(); }, 300); // 稍微延長到 300ms 讓綠光跑完
     }
     document.getElementById('sku').addEventListener('keypress', e => { if (e.key === 'Enter') search(); });
 </script>
