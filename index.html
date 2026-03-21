@@ -6,7 +6,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>超人電話亭系統 v44</title>
+    <title>超人電話亭系統 v45</title>
     <style>
         :root { --red: #d0021b; --yellow: #ffcc00; --white: #ffffff; }
         body { 
@@ -38,8 +38,6 @@
         .res-info { flex-grow: 1; }
         .res-name { font-size: 22px; font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
         .res-loc { font-size: 28px; font-weight: 900; color: var(--red); background: #fff5f5; padding: 5px 15px; border-radius: 15px; display: inline-block; border: 1px solid #ffdfdf; }
-        
-        /* 刪除按鈕樣式 */
         .delete-btn {
             background: #ff4d4d; color: white; border: none; width: 45px; height: 45px;
             border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer;
@@ -47,7 +45,6 @@
             box-shadow: 0 4px 0px #cc0000; flex-shrink: 0;
         }
         .delete-btn:active { transform: translateY(2px); box-shadow: 0 2px 0px #cc0000; }
-
         .no-result { color: #d0021b; text-align: center; padding: 30px; background: #fff1f1; border-radius: 25px; font-size: 18px; font-weight: bold; border: 2px dashed #ffb3b3; }
     </style>
 </head>
@@ -56,7 +53,7 @@
 <div class="app-container">
     <div class="header">
         <img src="https://supermanbooth.com.tw/wp-content/uploads/2022/11/super-1-300x141.png" alt="超人電話">
-        <div class="sub-text">✧ 貨位快速查詢系統 v44 ✧</div>
+        <div class="sub-text">✧ 貨位快速查詢系統 v45 ✧</div>
     </div>
     <div class="search-box">
         <input type="text" id="sku" placeholder="找名稱或櫃位..." spellcheck="false" autocomplete="off">
@@ -66,7 +63,6 @@
 </div>
 
 <script>
-    // 這裡維持原本的 database 內容，僅節錄開頭與結尾，請確保貼上完整資料
     const database = [
         { key: ["小竹"], loc: "我心裡", name: "小竹" },
         { key: ["YT"], loc: "垃圾桶", name: "YT" },
@@ -150,6 +146,25 @@
         { key: ["鏈鋸惡魔"], loc: "前D1", name: "鏈鋸惡魔" },
         { key: ["小滴凸眼魚"], loc: "前D2", name: "小滴凸眼魚" },
         { key: ["炸彈惡魔"], loc: "前D3", name: "炸彈惡魔" },
+        { key: ["八仙道具"], loc: "前D4", name: "八仙道具" },
+        { key: ["小彈簧狗"], loc: "前D5", name: "小彈簧狗" },
+        { key: ["aw5079佩羅那頭飾"], loc: "前D6", name: "aw5079佩羅那頭飾" },
+        { key: ["ab4278特瑞帽"], loc: "前D6", name: "ab4278特瑞帽" },
+        { key: ["AB4257末日博士"], loc: "前D6", name: "AB4257末日博士" },
+        { key: ["ba41國定殺戮"], loc: "前D6", name: "ba41國定殺戮" },
+        { key: ["ab4316暗黑紅心頭"], loc: "前D6", name: "ab4316暗黑紅心頭" },
+        { key: ["ba271波克比"], loc: "前D6", name: "ba271波克比" },
+        { key: ["ah2101面具"], loc: "前D6", name: "ah2101面具" },
+        { key: ["ae840綠谷頸環"], loc: "前D7", name: "ae840綠谷頸環" },
+        { key: ["ae404瑞貝卡頭飾"], loc: "前D7", name: "ae404瑞貝卡頭飾" },
+        { key: ["ab3372蒂米斯特雷庫夫人"], loc: "前D7", name: "ab3372蒂米斯特雷庫夫人" },
+        { key: ["ab3335v怪客"], loc: "前D7", name: "ab3335v怪客" },
+        { key: ["aw5508綾瀨星子"], loc: "前D7", name: "aw5508綾瀨星子" },
+        { key: ["ae846渡我被身子裝備"], loc: "前D9", name: "ae846渡我被身子裝備" },
+        { key: ["ba135炭治郎箱子"], loc: "前D10", name: "ba135炭治郎箱子" },
+        { key: ["備用黑武士頭"], loc: "前D10", name: "備用黑武士頭" },
+        { key: ["備用白兵頭"], loc: "前D10", name: "備用白兵頭" },
+        { key: ["ab0581"], loc: "前D11", name: "ab0581" },
         { key: ["黑大短襯裙"], loc: "後A1", name: "黑大短襯裙" },
         { key: ["紫大短襯裙"], loc: "後A1", name: "紫大短襯裙" },
         { key: ["粉大短襯裙"], loc: "後A1", name: "粉大短襯裙" },
@@ -241,9 +256,12 @@
         { key: ["日月扇"], loc: "後C8", name: "日月扇" },
         { key: ["一般沙鈴"], loc: "後C8", name: "一般沙鈴" },
         { key: ["阿拉蕾大便"], loc: "後C8", name: "阿拉蕾大便" },
-        { key: ["美金披肩"], loc: "後C9", name: "美金披肩" },
-        { key: ["錢袋"], loc: "後C9", name: "錢袋" },
-        { key: ["猴子"], loc: "後C9", name: "猴子" },
+        { key: ["ab1639人造人20號帽"], loc: "後C9", name: "ab1639人造人20號帽" },
+        { key: ["ba127美金披肩"], loc: "後C9", name: "ba127美金披肩" },
+        { key: ["ba165錢袋"], loc: "後C9", name: "ba165錢袋" },
+        { key: ["ba356猴子"], loc: "後C9", name: "ba356猴子" },
+        { key: ["死侍硬頭套"], loc: "後C9", name: "死侍硬頭套" },
+        { key: ["C-3PO備用半罩面具"], loc: "後C9", name: "C-3PO備用半罩面具" },
         { key: ["AS5003"], loc: "後C9", name: "AS5003" },
         { key: ["AS4006"], loc: "後C9", name: "AS4006" },
         { key: ["AS4005"], loc: "後C9", name: "AS4005" },
@@ -284,18 +302,14 @@
         const inputStr = document.getElementById('sku').value.trim();
         const resultArea = document.getElementById('resultArea');
         if (!inputStr) return;
-        
-        // 支援多單連發 (# 分隔)
         const keywords = inputStr.split(/[#、，, \n\t]+/).map(s => s.trim().toLowerCase()).filter(s => s !== "");
         resultArea.innerHTML = ""; 
-        
         keywords.forEach(keyword => {
             const matches = database.filter(item => {
                 const nameMatch = item.key.some(k => k.toLowerCase().includes(keyword));
                 const locMatch = item.loc.toLowerCase().includes(keyword);
                 return nameMatch || locMatch;
             });
-            
             if (matches.length > 0) {
                 matches.forEach(res => {
                     const div = document.createElement('div');
@@ -318,17 +332,12 @@
         });
         document.activeElement.blur();
     }
-
-    // 刪除該項目的功能
     function removeItem(btn) {
         const item = btn.closest('.result-item');
         item.style.transform = "scale(0.8)";
         item.style.opacity = "0";
-        setTimeout(() => {
-            item.remove();
-        }, 200);
+        setTimeout(() => { item.remove(); }, 200);
     }
-
     document.getElementById('sku').addEventListener('keypress', e => { if (e.key === 'Enter') search(); });
 </script>
 </body>
