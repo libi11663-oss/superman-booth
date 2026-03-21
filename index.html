@@ -2,8 +2,11 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>超人電話亭系統 v43</title>
+    <title>超人電話亭系統 v44</title>
     <style>
         :root { --red: #d0021b; --yellow: #ffcc00; --white: #ffffff; }
         body { 
@@ -27,12 +30,24 @@
         #resultArea { padding: 20px; flex-grow: 1; }
         .result-item { 
             background: white; border: 3px solid #ffebeb; border-left: 15px solid var(--red); border-radius: 25px;
-            padding: 25px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;
+            padding: 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;
             box-shadow: 0 10px 0px rgba(0,0,0,0.03); animation: slideIn 0.3s ease-out;
+            position: relative;
         }
         @keyframes slideIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .res-name { font-size: 24px; font-weight: bold; color: #555; }
-        .res-loc { font-size: 30px; font-weight: 900; color: var(--red); background: #fff5f5; padding: 10px 20px; border-radius: 20px; border: 2px solid #ffdfdf; }
+        .res-info { flex-grow: 1; }
+        .res-name { font-size: 22px; font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
+        .res-loc { font-size: 28px; font-weight: 900; color: var(--red); background: #fff5f5; padding: 5px 15px; border-radius: 15px; display: inline-block; border: 1px solid #ffdfdf; }
+        
+        /* 刪除按鈕樣式 */
+        .delete-btn {
+            background: #ff4d4d; color: white; border: none; width: 45px; height: 45px;
+            border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer;
+            margin-left: 15px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 0px #cc0000; flex-shrink: 0;
+        }
+        .delete-btn:active { transform: translateY(2px); box-shadow: 0 2px 0px #cc0000; }
+
         .no-result { color: #d0021b; text-align: center; padding: 30px; background: #fff1f1; border-radius: 25px; font-size: 18px; font-weight: bold; border: 2px dashed #ffb3b3; }
     </style>
 </head>
@@ -41,16 +56,17 @@
 <div class="app-container">
     <div class="header">
         <img src="https://supermanbooth.com.tw/wp-content/uploads/2022/11/super-1-300x141.png" alt="超人電話">
-        <div class="sub-text">✧ 貨位快速查詢系統 v43 ✧</div>
+        <div class="sub-text">✧ 貨位快速查詢系統 v44 ✧</div>
     </div>
     <div class="search-box">
         <input type="text" id="sku" placeholder="找名稱或櫃位..." spellcheck="false" autocomplete="off">
-        <button class="btn" onclick="search()">小竹出動尋找中 (๑•̀ㅂ•́)و✧</button>
+        <button class="btn" onclick="search()">查詢 (๑•̀ㅂ•́)و✧</button>
     </div>
     <div id="resultArea"></div>
 </div>
 
 <script>
+    // 這裡維持原本的 database 內容，僅節錄開頭與結尾，請確保貼上完整資料
     const database = [
         { key: ["小竹"], loc: "我心裡", name: "小竹" },
         { key: ["YT"], loc: "垃圾桶", name: "YT" },
@@ -268,19 +284,29 @@
         const inputStr = document.getElementById('sku').value.trim();
         const resultArea = document.getElementById('resultArea');
         if (!inputStr) return;
-        const keywords = inputStr.split(/[、，, \n\t]+/).map(s => s.trim().toLowerCase()).filter(s => s !== "");
+        
+        // 支援多單連發 (# 分隔)
+        const keywords = inputStr.split(/[#、，, \n\t]+/).map(s => s.trim().toLowerCase()).filter(s => s !== "");
         resultArea.innerHTML = ""; 
+        
         keywords.forEach(keyword => {
             const matches = database.filter(item => {
                 const nameMatch = item.key.some(k => k.toLowerCase().includes(keyword));
                 const locMatch = item.loc.toLowerCase().includes(keyword);
                 return nameMatch || locMatch;
             });
+            
             if (matches.length > 0) {
                 matches.forEach(res => {
                     const div = document.createElement('div');
                     div.className = "result-item";
-                    div.innerHTML = `<div class="res-name">📦 ${res.name}</div><div class="res-loc">${res.loc}</div>`;
+                    div.innerHTML = `
+                        <div class="res-info">
+                            <span class="res-name">📦 ${res.name}</span>
+                            <span class="res-loc">${res.loc}</span>
+                        </div>
+                        <button class="delete-btn" onclick="removeItem(this)">×</button>
+                    `;
                     resultArea.appendChild(div);
                 });
             } else {
@@ -292,6 +318,17 @@
         });
         document.activeElement.blur();
     }
+
+    // 刪除該項目的功能
+    function removeItem(btn) {
+        const item = btn.closest('.result-item');
+        item.style.transform = "scale(0.8)";
+        item.style.opacity = "0";
+        setTimeout(() => {
+            item.remove();
+        }, 200);
+    }
+
     document.getElementById('sku').addEventListener('keypress', e => { if (e.key === 'Enter') search(); });
 </script>
 </body>
