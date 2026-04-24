@@ -1,185 +1,122 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>超人電話亭系統 v47</title>
-    <style>
-        :root { --red: #d0021b; --yellow: #ffcc00; --white: #ffffff; }
-        
-        body { 
-            background-color: #fffaf0;
-            background-image: radial-gradient(#d0021b1a 1px, transparent 1px);
-            background-size: 20px 20px;
-            font-family: "Rounded Mplus 1c", "Yu Gothic", "PingFang TC", "微軟正黑體", cursive; 
-            margin: 0; padding: 0; 
-        }
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>超人電話亭系統 v46</title>
+    <style>
+        :root { --red: #d0021b; --yellow: #ffcc00; --white: #ffffff; }
+        
+        body { 
+            /* 背景：米色底 + 紅色微網格質感 */
+            background-color: #fffaf0;
+            background-image: radial-gradient(#d0021b1a 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: "Rounded Mplus 1c", "Yu Gothic", "PingFang TC", "微軟正黑體", cursive; 
+            margin: 0; padding: 0; 
+        }
 
-        .app-container { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
-        .header { background: var(--red); padding: 40px 20px; text-align: center; border-bottom: 8px solid var(--yellow); overflow: hidden; }
-        .header img { max-width: 80%; height: auto; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2)); }
-        
-        /* 標題與竹子容器 */
-        .sub-text-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-top: 15px;
-        }
+        .app-container { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
+        .header { background: var(--red); padding: 40px 20px; text-align: center; border-bottom: 8px solid var(--yellow); }
+        .header img { max-width: 80%; height: auto; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2)); }
+        
+        .sub-text { 
+            font-size: 18px; 
+            color: var(--white); 
+            margin-top: 15px; 
+            font-weight: bold; 
+            letter-spacing: 2px;
+            /* 霓虹燈效果 */
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow);
+            animation: neon-blink 2s infinite ease-in-out;
+        }
 
-        .sub-text { 
-            font-size: 18px; 
-            color: var(--white); 
-            font-weight: bold; 
-            letter-spacing: 2px;
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow);
-            animation: neon-blink 2s infinite ease-in-out;
-            position: relative;
-            z-index: 2;
-        }
+        @keyframes neon-blink {
+            0%, 100% { opacity: 1; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow); }
+            50% { opacity: 0.8; text-shadow: 0 0 2px #fff, 0 0 5px var(--yellow); }
+        }
 
-        /* 旋轉小竹子樣式 */
-        .bamboo-orbit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 1px;
-            height: 1px;
-            animation: rotate-bamboo 4s linear infinite;
-            z-index: 3;
-        }
+        .search-box { 
+            padding: 30px 20px; 
+            text-align: center; 
+            background: rgba(255,255,255,0.85); /* 半透明背景，可透出網格 */
+            backdrop-filter: blur(5px); /* 毛玻璃效果 */
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
 
-        .bamboo-icon {
-            position: absolute;
-            font-size: 24px;
-            top: -12px;
-            left: 140px; /* 控制竹子繞圈的半徑，若文字太長可以調大 */
-        }
+        input { 
+            width: 100%; padding: 22px; border: 4px solid #ff8d8d; border-radius: 30px;
+            font-size: 24px; box-sizing: border-box; outline: none; text-align: center; font-weight: bold; background: #fff9f9;
+        }
 
-        @keyframes rotate-bamboo {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        .btn { 
+            width: 100%; background: var(--yellow); color: var(--red); border: none; padding: 22px; border-radius: 30px;
+            font-size: 26px; font-weight: 900; margin-top: 15px; cursor: pointer; box-shadow: 0 8px 0px #e6b800; transition: 0.1s;
+        }
 
-        @keyframes neon-blink {
-            0%, 100% { opacity: 1; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow); }
-            50% { opacity: 0.8; text-shadow: 0 0 2px #fff, 0 0 5px var(--yellow); }
-        }
+        .btn:active { transform: translateY(6px); box-shadow: 0 2px 0px #e6b800; }
+        
+        #resultArea { padding: 20px; flex-grow: 1; }
+        
+        .result-item { 
+            background: white; border: 3px solid #ffebeb; border-left: 15px solid var(--red); border-radius: 25px;
+            padding: 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 10px 0px rgba(0,0,0,0.03); animation: slideIn 0.3s ease-out;
+            position: relative; transition: 0.3s;
+        }
 
-        .search-box { 
-            padding: 30px 20px; 
-            text-align: center; 
-            background: rgba(255,255,255,0.85); 
-            backdrop-filter: blur(5px); 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-        }
+        @keyframes slideIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .res-info { flex-grow: 1; }
+        .res-name { font-size: 22px; font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
+        .res-loc { font-size: 28px; font-weight: 900; color: var(--red); background: #fff5f5; padding: 5px 15px; border-radius: 15px; display: inline-block; border: 1px solid #ffdfdf; }
+        .res-loc::before { content: "📍"; margin-right: 5px; font-size: 20px; }
 
-        input { 
-            width: 100%; padding: 22px; border: 4px solid #ff8d8d; border-radius: 30px;
-            font-size: 24px; box-sizing: border-box; outline: none; text-align: center; font-weight: bold; background: #fff9f9;
-        }
+        .delete-btn {
+            background: #ff4d4d; color: white; border: none; width: 45px; height: 45px;
+            border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer;
+            margin-left: 15px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 0px #cc0000; flex-shrink: 0;
+        }
 
-        .btn { 
-            width: 100%; background: var(--yellow); color: var(--red); border: none; padding: 22px; border-radius: 30px;
-            font-size: 26px; font-weight: 900; margin-top: 15px; cursor: pointer; box-shadow: 0 8px 0px #e6b800; transition: 0.1s;
-        }
+        .result-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(208, 2, 27, 0.1);
+            background: linear-gradient(145deg, #ffffff, #fff5f5);
+        }
 
-        .btn:active { transform: translateY(6px); box-shadow: 0 2px 0px #e6b800; }
-        
-        #resultArea { padding: 20px; flex-grow: 1; }
-        
-        .result-item { 
-            background: white; border: 3px solid #ffebeb; border-left: 15px solid var(--red); border-radius: 25px;
-            padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column; 
-            box-shadow: 0 10px 0px rgba(0,0,0,0.03); animation: slideIn 0.3s ease-out;
-            position: relative; transition: 0.3s;
-            cursor: pointer;
-        }
+        .no-result { color: #d0021b; text-align: center; padding: 30px; background: #fff1f1; border-radius: 25px; font-size: 18px; font-weight: bold; border: 2px dashed #ffb3b3; }
 
-        .result-main { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-
-        @keyframes slideIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        
-        .res-info { flex-grow: 1; }
-        .res-name { font-size: 22px; font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
-        .res-loc { font-size: 28px; font-weight: 900; color: var(--red); background: #fff5f5; padding: 5px 15px; border-radius: 15px; display: inline-block; border: 1px solid #ffdfdf; }
-        .res-loc::before { content: "📍"; margin-right: 5px; font-size: 20px; }
-
-        .delete-btn {
-            background: #ff4d4d; color: white; border: none; width: 45px; height: 45px;
-            border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer;
-            margin-left: 15px; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 0px #cc0000; flex-shrink: 0;
-        }
-
-        .result-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 20px rgba(208, 2, 27, 0.1);
-            background: linear-gradient(145deg, #ffffff, #fff5f5);
-        }
-
-        .no-result { color: #d0021b; text-align: center; padding: 30px; background: #fff1f1; border-radius: 25px; font-size: 18px; font-weight: bold; border: 2px dashed #ffb3b3; }
-
-        .removing {
-            background-color: #e6ffec !important; 
-            border-color: #cfffda !important;
-            border-left-color: #34d399 !important;
-            transform: scale(0.5);
-            opacity: 0;
-            transition: 0.3s ease-in;
-        }
-
-        .res-img {
-            width: 100%;
-            max-height: 350px;
-            object-fit: contain;
-            margin-top: 15px;
-            display: none;
-            border-radius: 15px;
-            border: 2px solid #eee;
-            background: #fff;
-        }
-
-        .result-item.active .res-img {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-</head>
-<body>
-
+        .removing {
+            background-color: #e6ffec !important; 
+            border-color: #cfffda !important;
+            border-left-color: #34d399 !important;
+            transform: scale(0.5);
+            opacity: 0;
+            transition: 0.3s ease-in;
+        }
+    </style>
 <div class="app-container">
-    <div class="header">
-        <img src="https://supermanbooth.com.tw/wp-content/uploads/2022/11/super-1-300x141.png" alt="超人電話">
-        <br>
-        <div class="sub-text-wrapper">
-            <div class="bamboo-orbit">
-                <span class="bamboo-icon">🎋</span>
-            </div>
-            <div class="sub-text">✧ 貨位快速查詢系統 v47 ✧</div>
-        </div>
-    </div>
-    <div class="search-box">
-        <input type="text" id="sku" placeholder="找名稱或櫃位..." spellcheck="false" autocomplete="off">
-        <button class="btn" onclick="search()">小竹出巡中 (๑•̀ㅂ•́)و✧</button>
-    </div>
-    <div id="resultArea"></div>
+    <div class="header">
+        <img src="https://supermanbooth.com.tw/wp-content/uploads/2022/11/super-1-300x141.png" alt="超人電話">
+        <div class="sub-text">✧ 貨位快速查詢系統 v46 ✧</div>
+    </div>
+    <div class="search-box">
+        <input type="text" id="sku" placeholder="找名稱或櫃位..." spellcheck="false" autocomplete="off">
+        <button class="btn" onclick="search()">小竹出巡中 (๑•̀ㅂ•́)و✧</button>
+    </div>
+    <div id="resultArea"></div>
 </div>
 
 <script>
-    // 資料庫內容保持不變
-    const database = [
-        { key: ["小竹"], loc: "我心裡", name: "小竹" },
+    const database = [
+        { key: ["小竹"], loc: "我心裡", name: "小竹" },
         { key: ["YT"], loc: "垃圾桶", name: "YT" },
         { key: ["BA8998"], loc: "後B1", name: "BA8998", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA8998.jpg" },
         { key: ["BA8999"], loc: "後B1", name: "BA8999", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA8999.jpg" },
@@ -444,63 +381,47 @@
         { key: ["CD0213靡道人面具"], loc: "A後天花板", name: "CD0213靡道人面具" }
     ];
 
-    function search() {
-        const inputStr = document.getElementById('sku').value.trim();
-        const resultArea = document.getElementById('resultArea');
-        if (!inputStr) return;
-        
-        const keywords = inputStr.split(/[#、，, \n\t]+/).map(s => s.trim().toLowerCase()).filter(s => s !== "");
-        resultArea.innerHTML = ""; 
-        
-        keywords.forEach(keyword => {
-            const matches = database.filter(item => {
-                const nameMatch = item.key.some(k => k.toLowerCase().includes(keyword));
-                const locMatch = item.loc.toLowerCase().includes(keyword);
-                return nameMatch || locMatch;
-            });
-            
-            if (matches.length > 0) {
-                matches.forEach(res => {
-                    const div = document.createElement('div');
-                    div.className = "result-item";
-                    
-                    div.onclick = function() {
-                        this.classList.toggle('active');
-                        if (navigator.vibrate) { navigator.vibrate(10); } 
-                    };
 
-                    div.innerHTML = `
-                        <div class="result-main">
-                            <div class="res-info">
-                                <span class="res-name">📦 ${res.name}</span>
-                                <span class="res-loc">${res.loc}</span>
-                            </div>
-                            <button class="delete-btn" onclick="event.stopPropagation(); removeItem(this)">×</button>
-                        </div>
-                        ${res.img ? `<img src="${res.img}" class="res-img" loading="lazy">` : ''}
-                    `;
-                    resultArea.appendChild(div);
-                });
-            } else {
-                const div = document.createElement('div');
-                div.className = "no-result";
-                div.innerText = `找不到「${keyword}」啦 (´•̥ ᵔ •̥ \`)`;
-                resultArea.appendChild(div);
-            }
-        });
-        document.activeElement.blur();
-    }
-
-    function removeItem(btn) {
-        const item = btn.closest('.result-item');
-        item.classList.add('removing');
-        setTimeout(() => { item.remove(); }, 300);
-    }
-
-    document.getElementById('sku').addEventListener('keypress', e => { 
-        if (e.key === 'Enter') search(); 
-    });
+    function search() {
+        const inputStr = document.getElementById('sku').value.trim();
+        const resultArea = document.getElementById('resultArea');
+        if (!inputStr) return;
+        const keywords = inputStr.split(/[#、，, \n\t]+/).map(s => s.trim().toLowerCase()).filter(s => s !== "");
+        resultArea.innerHTML = ""; 
+        keywords.forEach(keyword => {
+            const matches = database.filter(item => {
+                const nameMatch = item.key.some(k => k.toLowerCase().includes(keyword));
+                const locMatch = item.loc.toLowerCase().includes(keyword);
+                return nameMatch || locMatch;
+            });
+            if (matches.length > 0) {
+                matches.forEach(res => {
+                    const div = document.createElement('div');
+                    div.className = "result-item";
+                    div.innerHTML = `
+                        <div class="res-info">
+                            <span class="res-name">📦 ${res.name}</span>
+                            <span class="res-loc">${res.loc}</span>
+                        </div>
+                        <button class="delete-btn" onclick="removeItem(this)">×</button>
+                    `;
+                    resultArea.appendChild(div);
+                });
+            } else {
+                const div = document.createElement('div');
+                div.className = "no-result";
+                div.innerText = `找不到「${keyword}」啦 (´•̥ ᵔ •̥ \`)`;
+                resultArea.appendChild(div);
+            }
+        });
+        document.activeElement.blur();
+    }
+   function removeItem(btn) {
+        const item = btn.closest('.result-item');
+        item.classList.add('removing'); // 這裡會啟動 CSS 的綠光與消散效果
+        setTimeout(() => { item.remove(); }, 300); // 稍微延長到 300ms 讓綠光跑完
+    }
+    document.getElementById('sku').addEventListener('keypress', e => { if (e.key === 'Enter') search(); });
 </script>
-
 </body>
 </html>
