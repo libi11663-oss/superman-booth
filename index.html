@@ -444,40 +444,45 @@
         { key: ["CD213靡道人面具"], loc: "A後天花板", name: "CD213靡道人面具" }
     ];
 
- function search() {
+function search() {
         const inputStr = document.getElementById('sku').value.trim();
         const resultArea = document.getElementById('resultArea');
         if (!inputStr) return;
         
-        // 分隔關鍵字
         const keywords = inputStr.split(/[#、，, \n\t]+/).map(s => s.trim().toLowerCase()).filter(s => s !== "");
         resultArea.innerHTML = ""; 
 
-        // 輔助函式：將字串中的數字部分去掉開頭的 0 (例如 bb0401 -> bb401)
-        const normalize = (str) => str.replace(/0+([1-9][0-9]*)/g, '$1');
+        // 優化版正規化：把編號中的 0 全部拿掉來比對 (例如 bb0401 -> bb401, ba0620 -> ba620)
+        // 這樣管你打 bb000401 還是 bb401 都會變成 bb401
+        const simplify = (str) => {
+            return str.toLowerCase()
+                      .replace(/[^a-z0-9]/g, '') // 只留英文和數字
+                      .replace(/([a-z])0+([0-9])/g, '$1$2'); // 移除英文後面的開頭 0
+        };
 
         keywords.forEach(keyword => {
-            const normalizedKeyword = normalize(keyword); // 取得正規化後的關鍵字
+            const simpleKeyword = simplify(keyword);
 
             const matches = database.filter(item => {
-                // 檢查每一個 Key
-                const nameMatch = item.key.some(k => {
-                    const lowerKey = k.toLowerCase();
-                    const normalizedKey = normalize(lowerKey);
-                    
-                    return lowerKey.includes(keyword) || 
-                           normalizedKey.includes(normalizedKeyword) ||
-                           normalizedKeyword.includes(normalizedKey);
-                });
+                // 1. 先找有沒有完全包含字串
+                const lowerKeyword = keyword.toLowerCase();
+                const nameMatch = item.key.some(k => k.toLowerCase().includes(lowerKeyword));
+                const locMatch = item.loc.toLowerCase().includes(lowerKeyword);
+                
+                if (nameMatch || locMatch) return true;
 
-                const locMatch = item.loc.toLowerCase().includes(keyword);
-                return nameMatch || locMatch;
+                // 2. 如果沒找到，啟動「模糊編號比對」
+                return item.key.some(k => {
+                    const simpleKey = simplify(k);
+                    // 只要簡化後的字串互相包含，就算對
+                    return simpleKey.includes(simpleKeyword) || simpleKeyword.includes(simpleKey);
+                });
             });
             
-            // 渲染邏輯 (與原本相同)
             if (matches.length > 0) {
-                // 為了避免多個關鍵字查到重複的項目，可以使用 Set 或是這裡簡單處理
-                const uniqueMatches = Array.from(new Set(matches)); 
+                // 排除重複項目
+                const uniqueMatches = [...new Map(matches.map(item => [item.name + item.loc, item])).values()];
+                
                 uniqueMatches.forEach(res => {
                     const div = document.createElement('div');
                     div.className = "result-item";
