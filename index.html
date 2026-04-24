@@ -1,526 +1,505 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>超人電話亭系統 v47</title>
-    <style>
-        :root { --red: #d0021b; --yellow: #ffcc00; --white: #ffffff; }
-        
-        body { 
-            background-color: #fffaf0;
-            background-image: radial-gradient(#d0021b1a 1px, transparent 1px);
-            background-size: 20px 20px;
-            font-family: "Rounded Mplus 1c", "Yu Gothic", "PingFang TC", "微軟正黑體", cursive; 
-            margin: 0; padding: 0; 
-        }
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>超人電話亭系統 v47</title>
+    <style>
+        :root { --red: #d0021b; --yellow: #ffcc00; --white: #ffffff; }
+        
+        body { 
+            background-color: #fffaf0;
+            background-image: radial-gradient(#d0021b1a 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: "Rounded Mplus 1c", "Yu Gothic", "PingFang TC", "微軟正黑體", cursive; 
+            margin: 0; padding: 0; 
+        }
 
-        .app-container { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
-        .header { background: var(--red); padding: 40px 20px; text-align: center; border-bottom: 8px solid var(--yellow); overflow: hidden; }
-        .header img { max-width: 80%; height: auto; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2)); }
-        
-        /* 標題與竹子容器 */
-        .sub-text-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-top: 15px;
-        }
+        .app-container { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
+        .header { background: var(--red); padding: 40px 20px; text-align: center; border-bottom: 8px solid var(--yellow); overflow: hidden; }
+        .header img { max-width: 80%; height: auto; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2)); }
+        
+        /* 標題與竹子容器 */
+        .sub-text-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-top: 15px;
+        }
 
-        .sub-text { 
-            font-size: 18px; 
-            color: var(--white); 
-            font-weight: bold; 
-            letter-spacing: 2px;
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow);
-            animation: neon-blink 2s infinite ease-in-out;
-            position: relative;
-            z-index: 2;
-        }
+        .sub-text { 
+            font-size: 18px; 
+            color: var(--white); 
+            font-weight: bold; 
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow);
+            animation: neon-blink 2s infinite ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
 
-        /* 旋轉小竹子樣式 */
-        .bamboo-orbit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 1px;
-            height: 1px;
-            animation: rotate-bamboo 4s linear infinite;
-            z-index: 3;
-        }
+        /* 旋轉小竹子樣式 */
+        .bamboo-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1px;
+            height: 1px;
+            animation: rotate-bamboo 4s linear infinite;
+            z-index: 3;
+        }
 
-        .bamboo-icon {
-            position: absolute;
-            font-size: 24px;
-            top: -12px;
-            left: 140px; /* 控制竹子繞圈的半徑，若文字太長可以調大 */
-        }
+        .bamboo-icon {
+            position: absolute;
+            font-size: 24px;
+            top: -12px;
+            left: 140px; /* 控制竹子繞圈的半徑，若文字太長可以調大 */
+        }
 
-        @keyframes rotate-bamboo {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes rotate-bamboo {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
-        @keyframes neon-blink {
-            0%, 100% { opacity: 1; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow); }
-            50% { opacity: 0.8; text-shadow: 0 0 2px #fff, 0 0 5px var(--yellow); }
-        }
+        @keyframes neon-blink {
+            0%, 100% { opacity: 1; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--yellow); }
+            50% { opacity: 0.8; text-shadow: 0 0 2px #fff, 0 0 5px var(--yellow); }
+        }
 
-        .search-box { 
-            padding: 30px 20px; 
-            text-align: center; 
-            background: rgba(255,255,255,0.85); 
-            backdrop-filter: blur(5px); 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-        }
+        .search-box { 
+            padding: 30px 20px; 
+            text-align: center; 
+            background: rgba(255,255,255,0.85); 
+            backdrop-filter: blur(5px); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
 
-        input { 
-            width: 100%; padding: 22px; border: 4px solid #ff8d8d; border-radius: 30px;
-            font-size: 24px; box-sizing: border-box; outline: none; text-align: center; font-weight: bold; background: #fff9f9;
-        }
+        input { 
+            width: 100%; padding: 22px; border: 4px solid #ff8d8d; border-radius: 30px;
+            font-size: 24px; box-sizing: border-box; outline: none; text-align: center; font-weight: bold; background: #fff9f9;
+        }
 
-        .btn { 
-            width: 100%; background: var(--yellow); color: var(--red); border: none; padding: 22px; border-radius: 30px;
-            font-size: 26px; font-weight: 900; margin-top: 15px; cursor: pointer; box-shadow: 0 8px 0px #e6b800; transition: 0.1s;
-        }
+        .btn { 
+            width: 100%; background: var(--yellow); color: var(--red); border: none; padding: 22px; border-radius: 30px;
+            font-size: 26px; font-weight: 900; margin-top: 15px; cursor: pointer; box-shadow: 0 8px 0px #e6b800; transition: 0.1s;
+        }
 
-        .btn:active { transform: translateY(6px); box-shadow: 0 2px 0px #e6b800; }
-        
-        #resultArea { padding: 20px; flex-grow: 1; }
-        
-        .result-item { 
-            background: white; border: 3px solid #ffebeb; border-left: 15px solid var(--red); border-radius: 25px;
-            padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column; 
-            box-shadow: 0 10px 0px rgba(0,0,0,0.03); animation: slideIn 0.3s ease-out;
-            position: relative; transition: 0.3s;
-            cursor: pointer;
-        }
+        .btn:active { transform: translateY(6px); box-shadow: 0 2px 0px #e6b800; }
+        
+        #resultArea { padding: 20px; flex-grow: 1; }
+        
+        .result-item { 
+            background: white; border: 3px solid #ffebeb; border-left: 15px solid var(--red); border-radius: 25px;
+            padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column; 
+            box-shadow: 0 10px 0px rgba(0,0,0,0.03); animation: slideIn 0.3s ease-out;
+            position: relative; transition: 0.3s;
+            cursor: pointer;
+        }
 
-        .result-main { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        .result-main { display: flex; align-items: center; justify-content: space-between; width: 100%; }
 
-        @keyframes slideIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        
-        .res-info { flex-grow: 1; }
-        .res-name { font-size: 22px; font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
-        .res-loc { font-size: 28px; font-weight: 900; color: var(--red); background: #fff5f5; padding: 5px 15px; border-radius: 15px; display: inline-block; border: 1px solid #ffdfdf; }
-        .res-loc::before { content: "📍"; margin-right: 5px; font-size: 20px; }
+        @keyframes slideIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .res-info { flex-grow: 1; }
+        .res-name { font-size: 22px; font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
+        .res-loc { font-size: 28px; font-weight: 900; color: var(--red); background: #fff5f5; padding: 5px 15px; border-radius: 15px; display: inline-block; border: 1px solid #ffdfdf; }
+        .res-loc::before { content: "📍"; margin-right: 5px; font-size: 20px; }
 
-        .delete-btn {
-            background: #ff4d4d; color: white; border: none; width: 45px; height: 45px;
-            border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer;
-            margin-left: 15px; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 0px #cc0000; flex-shrink: 0;
-        }
+        .delete-btn {
+            background: #ff4d4d; color: white; border: none; width: 45px; height: 45px;
+            border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer;
+            margin-left: 15px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 0px #cc0000; flex-shrink: 0;
+        }
 
-        .result-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 20px rgba(208, 2, 27, 0.1);
-            background: linear-gradient(145deg, #ffffff, #fff5f5);
-        }
+        .result-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(208, 2, 27, 0.1);
+            background: linear-gradient(145deg, #ffffff, #fff5f5);
+        }
 
-        .no-result { color: #d0021b; text-align: center; padding: 30px; background: #fff1f1; border-radius: 25px; font-size: 18px; font-weight: bold; border: 2px dashed #ffb3b3; }
+        .no-result { color: #d0021b; text-align: center; padding: 30px; background: #fff1f1; border-radius: 25px; font-size: 18px; font-weight: bold; border: 2px dashed #ffb3b3; }
 
-        .removing {
-            background-color: #e6ffec !important; 
-            border-color: #cfffda !important;
-            border-left-color: #34d399 !important;
-            transform: scale(0.5);
-            opacity: 0;
-            transition: 0.3s ease-in;
-        }
+        .removing {
+            background-color: #e6ffec !important; 
+            border-color: #cfffda !important;
+            border-left-color: #34d399 !important;
+            transform: scale(0.5);
+            opacity: 0;
+            transition: 0.3s ease-in;
+        }
 
-        .res-img {
-            width: 100%;
-            max-height: 350px;
-            object-fit: contain;
-            margin-top: 15px;
-            display: none;
-            border-radius: 15px;
-            border: 2px solid #eee;
-            background: #fff;
-        }
+        .res-img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            margin-top: 15px;
+            display: none;
+            border-radius: 15px;
+            border: 2px solid #eee;
+            background: #fff;
+        }
 
-        .result-item.active .res-img {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
+        .result-item.active .res-img {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div class="header">
-        <img src="https://supermanbooth.com.tw/wp-content/uploads/2022/11/super-1-300x141.png" alt="超人電話">
-        <br>
-        <div class="sub-text-wrapper">
-            <div class="bamboo-orbit">
-                <span class="bamboo-icon">🎋</span>
-            </div>
-            <div class="sub-text">✧ 貨位快速查詢系統 v47 ✧</div>
-        </div>
-    </div>
-    <div class="search-box">
-        <input type="text" id="sku" placeholder="找名稱或櫃位..." spellcheck="false" autocomplete="off">
-        <button class="btn" onclick="search()">小竹出巡中 (๑•̀ㅂ•́)و✧</button>
-    </div>
-    <div id="resultArea"></div>
+    <div class="header">
+        <img src="https://supermanbooth.com.tw/wp-content/uploads/2022/11/super-1-300x141.png" alt="超人電話">
+        <br>
+        <div class="sub-text-wrapper">
+            <div class="bamboo-orbit">
+                <span class="bamboo-icon">🎋</span>
+            </div>
+            <div class="sub-text">✧ 貨位快速查詢系統 v47 ✧</div>
+        </div>
+    </div>
+    <div class="search-box">
+        <input type="text" id="sku" placeholder="找名稱或櫃位..." spellcheck="false" autocomplete="off">
+        <button class="btn" onclick="search()">小竹出巡中 (๑•̀ㅂ•́)و✧</button>
+    </div>
+    <div id="resultArea"></div>
 </div>
 
 <script>
-    // 資料庫內容保持不變
-    const database = [
-        { key: ["小竹"], loc: "我心裡", name: "小竹" },
-        { key: ["YT"], loc: "垃圾桶", name: "YT" },
-        { key: ["BA8998"], loc: "後B1", name: "BA8998", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA8998.jpg" },
-        { key: ["BA8999"], loc: "後B1", name: "BA8999", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA8999.jpg" },
-        { key: ["BA9000"], loc: "後B1", name: "BA9000", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA9000.jpg" },
-        { key: ["BA9991"], loc: "後B1", name: "BA9991", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA9991.jpg" },
-        { key: ["ab1729艾米達拉頭飾"], loc: "前A1", name: "ab1729艾米達拉頭飾", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB1729-1.jpg" },
-        { key: ["bc35備用黑武士頭"], loc: "前A2", name: "bc35備用黑武士頭" },
-        { key: ["備用暴風兵頭"], loc: "前A2", name: "備用暴風兵頭" },
-        { key: ["ba620子彈肩帶"], loc: "前A3", name: "ba620子彈肩帶", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0620.jpg" },
-        { key: ["ba621子彈腰帶"], loc: "前A3", name: "ba621子彈腰帶", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0621.jpg" },
-        { key: ["ba141防毒面具"], loc: "前A3", name: "ba141防毒面具", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0141.jpg" },
-        { key: ["拳擊手套"], loc: "前A4", name: "拳擊手套", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/02/BA0206-2.jpg" },
-        { key: ["金銀彩球"], loc: "前A5", name: "金銀彩球", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0674.jpg" },
-        { key: ["紅粉彩球"], loc: "前A6", name: "紅粉彩球", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0674.jpg" },
-        { key: ["藍綠彩球"], loc: "前A7", name: "藍綠彩球", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0674.jpg" },
-        { key: ["AB3372武器"], loc: "前A8", name: "AB3372武器", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/AB3372-1.jpg" },
-        { key: ["水行俠腰甲"], loc: "前A8", name: "水行俠腰甲", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB0611-1.jpg" },
-        { key: ["水行俠護腕"], loc: "前A8", name: "水行俠護腕", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB0611-1.jpg" },
-        { key: ["胡迪牛仔帽"], loc: "前B1", name: "胡迪牛仔帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2024/01/AB0897.jpg" },
-        { key: ["翠絲牛仔帽"], loc: "前B1", name: "翠絲牛仔帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB0905.jpg" },
-        { key: ["棕棘皮牛仔帽"], loc: "前B1", name: "棕棘皮牛仔帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB0907.jpg" },
-        { key: ["紅棘皮牛仔帽"], loc: "前B2", name: "紅棘皮牛仔帽" },
-        { key: ["粉牛仔帽"], loc: "前B2", name: "粉牛仔帽" },
-        { key: ["員外帽"], loc: "前B3", name: "員外帽" },
-        { key: ["BB658"], loc: "前B4", name: "BB658", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2026/02/BB0658.jpg" },
-        { key: ["BB634"], loc: "前B4", name: "BB634", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BB0634-1.jpg" },
-        { key: ["BB635"], loc: "前B4", name: "BB635", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BB0635-1.jpg" },
-        { key: ["紅心皇后帽"], loc: "前B4", name: "紅心皇后帽" },
-        { key: ["護士帽"], loc: "前B5", name: "護士帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2024/12/AH2065.jpg" },
-        { key: ["水手帽"], loc: "前B5", name: "水手帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AP6583-1.jpg" },
-        { key: ["殭屍普帽"], loc: "前B6", name: "殭屍普帽" },
-        { key: ["教官帽"], loc: "前B7", name: "教官帽" },
-        { key: ["軍閥帽"], loc: "前B7", name: "軍閥帽" },
-        { key: ["魯夫帽"], loc: "前B8", name: "魯夫帽" },
-        { key: ["蘇菲帽"], loc: "前B8", name: "蘇菲帽" },
-        { key: ["ae730莎莉娜帽"], loc: "前B8", name: "ae730莎莉娜帽" },
-        { key: ["AE730"], loc: "前B8", name: "AE730" },
-        { key: ["羅帽子"], loc: "前B8", name: "羅帽子" },
-        { key: ["艾斯帽子"], loc: "前B8", name: "艾斯帽子" },
-        { key: ["中川帽子"], loc: "前B8", name: "中川帽子" },
-        { key: ["紅短內襯裙"], loc: "前B9", name: "紅短內襯裙" },
-        { key: ["白短內襯裙"], loc: "前B9", name: "白短內襯裙" },
-        { key: ["金銀粉黑亮片帽"], loc: "前B10", name: "金銀粉黑亮片帽" },
-        { key: ["特種部隊頭盔"], loc: "前B11", name: "特種部隊頭盔" },
-        { key: ["萬磁王"], loc: "前B11", name: "萬磁王" },
-        { key: ["拜森帽"], loc: "前B11", name: "拜森帽" },
-        { key: ["花子君帽"], loc: "前B11", name: "花子君帽" },
-        { key: ["弗萊迪帽"], loc: "前B11", name: "弗萊迪帽" },
-        { key: ["月光刑警"], loc: "前B11", name: "月光刑警" },
-        { key: ["bb12料理鼠王"], loc: "前B11", name: "bb12料理鼠王" },
-        { key: ["女機長帽"], loc: "前B11", name: "女機長帽" },
-        { key: ["界王頭"], loc: "前B11", name: "界王頭" },
-        { key: ["龜殼"], loc: "前B12", name: "龜殼" },
-        { key: ["上海灘黑棕帽"], loc: "前C1", name: "上海灘黑棕帽" },
-        { key: ["黑手黨帽"], loc: "前C1", name: "黑手黨帽" },
-        { key: ["茱蒂帽"], loc: "前C2", name: "茱蒂帽" },
-        { key: ["機長帽"], loc: "前C3", name: "機長帽" },
-        { key: ["上海灘其他色"], loc: "前C4", name: "上海灘其他色" },
-        { key: ["布女警帽"], loc: "前C5", name: "布女警帽" },
-        { key: ["皮女警帽"], loc: "前C6", name: "皮女警帽" },
-        { key: ["女海關白帽"], loc: "前C7", name: "女海關白帽" },
-        { key: ["紅藍空姐帽"], loc: "前C7", name: "紅藍空姐帽" },
-        { key: ["酒紅色空姐帽"], loc: "前C8", name: "酒紅色空姐帽" },
-        { key: ["濟公帽"], loc: "前C9", name: "濟公帽" },
-        { key: ["屎伯帽"], loc: "前C9", name: "屎伯帽" },
-        { key: ["大便帽"], loc: "前C9", name: "大便帽" },
-        { key: ["蒙古帽一頂"], loc: "前C9", name: "蒙古帽一頂" },
-        { key: ["包租公包子籠"], loc: "前C9", name: "包租公包子籠" },
-        { key: ["卡蹦公爵"], loc: "前C9", name: "卡蹦公爵" },
-        { key: ["椰殼沙鈴"], loc: "前C9", name: "椰殼沙鈴" },
-        { key: ["葫蘆"], loc: "前C10", name: "葫蘆" },
-        { key: ["黃昏帽"], loc: "前C10", name: "黃昏帽" },
-        { key: ["瘋帽客大小帽"], loc: "前C10", name: "瘋帽客大小帽" },
-        { key: ["兔子先生"], loc: "前C10", name: "兔子先生" },
-        { key: ["暗黑帽客"], loc: "前C10", name: "暗黑帽客" },
-        { key: ["歐美男警"], loc: "前C11", name: "歐美男警" },
-        { key: ["男海關"], loc: "前C11", name: "男海關" },
-        { key: ["男海軍"], loc: "前C11", name: "男海軍" },
-        { key: ["德軍軍官帽"], loc: "前C12", name: "德軍軍官帽" },
-        { key: ["鏈鋸惡魔"], loc: "前D1", name: "鏈鋸惡魔" },
-        { key: ["小滴凸眼魚"], loc: "前D2", name: "小滴凸眼魚" },
-        { key: ["炸彈惡魔"], loc: "前D3", name: "炸彈惡魔" },
-        { key: ["八仙道具"], loc: "前D4", name: "八仙道具" },
-        { key: ["小彈簧狗"], loc: "前D5", name: "小彈簧狗" },
-        { key: ["aw5079佩羅那頭飾"], loc: "前D6", name: "aw5079佩羅那頭飾" },
-        { key: ["ab4278特瑞帽"], loc: "前D6", name: "ab4278特瑞帽" },
-        { key: ["AB4257末日博士"], loc: "前D6", name: "AB4257末日博士" },
-        { key: ["ba41國定殺戮"], loc: "前D6", name: "ba41國定殺戮" },
-        { key: ["ab4316暗黑紅心頭"], loc: "前D6", name: "ab4316暗黑紅心頭" },
-        { key: ["ba271波克比"], loc: "前D6", name: "ba271波克比" },
-        { key: ["ah2101面具"], loc: "前D6", name: "ah2101面具" },
-        { key: ["ae840綠谷頸環"], loc: "前D7", name: "ae840綠谷頸環" },
-        { key: ["ae404瑞貝卡頭飾"], loc: "前D7", name: "ae404瑞貝卡頭飾" },
-        { key: ["ab3372蒂米斯特雷庫夫人"], loc: "前D7", name: "ab3372蒂米斯特雷庫夫人" },
-        { key: ["ab3335v怪客"], loc: "前D7", name: "ab3335v怪客" },
-        { key: ["aw5508綾瀨星子"], loc: "前D7", name: "aw5508綾瀨星子" },
-        { key: ["ae846渡我被身子裝備"], loc: "前D9", name: "ae846渡我被身子裝備" },
-        { key: ["ba135炭治郎箱子"], loc: "前D10", name: "ba135炭治郎箱子" },
-        { key: ["備用黑武士頭"], loc: "前D10", name: "備用黑武士頭" },
-        { key: ["備用白兵頭"], loc: "前D10", name: "備用白兵頭" },
-        { key: ["ab0581"], loc: "前D11", name: "ab0581" },
-        { key: ["黑大短襯裙"], loc: "後A1", name: "黑大短襯裙" },
-        { key: ["紫大短襯裙"], loc: "後A1", name: "紫大短襯裙" },
-        { key: ["粉大短襯裙"], loc: "後A1", name: "粉大短襯裙" },
-        { key: ["藍小短襯裙"], loc: "後A2", name: "藍小短襯裙" },
-        { key: ["綠小短襯裙"], loc: "後A2", name: "綠小短襯裙" },
-        { key: ["黑小短襯裙"], loc: "後A3", name: "黑小短襯裙" },
-        { key: ["AW3029"], loc: "後A4", name: "AW3029" },
-        { key: ["AW3037"], loc: "後A4", name: "AW3037" },
-        { key: ["AW3036"], loc: "後A5", name: "AW3036" },
-        { key: ["AW3026"], loc: "後A5", name: "AW3026" },
-        { key: ["AW3023"], loc: "後A5", name: "AW3023" },
-        { key: ["AW3011"], loc: "後A6", name: "AW3011" },
-        { key: ["AW3012"], loc: "後A6", name: "AW3012" },
-        { key: ["AW3006"], loc: "後A6", name: "AW3006" },
-        { key: ["AW3032"], loc: "後A6", name: "AW3032" },
-        { key: ["AW3023"], loc: "後A6", name: "AW3023" },
-        { key: ["AW3031"], loc: "後A6", name: "AW3031" },
-        { key: ["AW3019"], loc: "後A6", name: "AW3019" },
-        { key: ["AW3030"], loc: "後A6", name: "AW3030" },
-        { key: ["AW3034"], loc: "後A6", name: "AW3034" },
-        { key: ["粉小短襯裙"], loc: "後A7", name: "粉小短襯裙" },
-        { key: ["紅小短襯裙"], loc: "後A7", name: "紅小短襯裙" },
-        { key: ["AW3035"], loc: "後A8", name: "AW3035" },
-        { key: ["AW3021"], loc: "後A8", name: "AW3021" },
-        { key: ["人面獅身AN40頭"], loc: "後A8", name: "人面獅身AN40頭" },
-        { key: ["BB828阿努比斯頭"], loc: "後A9", name: "BB828阿努比斯頭" },
-        { key: ["BB826"], loc: "後A9", name: "BB826" },
-        { key: ["AN28埃及天使"], loc: "後A9", name: "AN28埃及天使" },
-        { key: ["泰國小帽"], loc: "後A10", name: "泰國小帽" },
-        { key: ["泰國大帽"], loc: "後A11", name: "泰國大帽" },
-        { key: ["假肚子"], loc: "後A12", name: "假肚子" },
-        { key: ["肌肉片"], loc: "後A13", name: "肌肉片" },
-        { key: ["假奶"], loc: "後A13", name: "假奶" },
-        { key: ["羅馬帽"], loc: "後A14", name: "羅馬帽" },
-        { key: ["精靈翅膀"], loc: "後B2", name: "精靈翅膀" },
-        { key: ["蝴蝶翅膀"], loc: "後B2", name: "蝴蝶翅膀" },
-        { key: ["白羽毛翅膀"], loc: "後B2", name: "白羽毛翅膀" },
-        { key: ["黑羽毛翅膀"], loc: "後B2", name: "黑羽毛翅膀" },
-        { key: ["威利旺卡帽"], loc: "後B3", name: "威利旺卡帽" },
-        { key: ["怪盜基德帽"], loc: "後B3", name: "怪盜基德帽" },
-        { key: ["鞋貓劍客帽"], loc: "後B3", name: "鞋貓劍客帽" },
-        { key: ["麥可傑克森帽"], loc: "後B3", name: "麥可傑克森帽" },
-        { key: ["賈方"], loc: "後B4", name: "賈方" },
-        { key: ["神燈女精靈"], loc: "後B4", name: "神燈女精靈" },
-        { key: ["黑帝斯"], loc: "後B4", name: "黑帝斯" },
-        { key: ["勘探員帽"], loc: "後B4", name: "勘探員帽" },
-        { key: ["瑞克帽"], loc: "後B4", name: "瑞克帽" },
-        { key: ["邦比艾塔帽"], loc: "後B4", name: "邦比艾塔帽" },
-        { key: ["夢遺大師"], loc: "後B4", name: "夢遺大師" },
-        { key: ["賽伯星頭"], loc: "後B5", name: "賽伯星頭" },
-        { key: ["海盜帽"], loc: "後B6", name: "海盜帽" },
-        { key: ["咖啡宮廷帽"], loc: "後B6", name: "咖啡宮廷帽" },
-        { key: ["卡其色宮廷帽"], loc: "後B6", name: "卡其色宮廷帽" },
-        { key: ["黑宮廷帽"], loc: "後B6", name: "黑宮廷帽" },
-        { key: ["開山刀"], loc: "後B7", name: "開山刀" },
-        { key: ["小鐮刀"], loc: "後B7", name: "小鐮刀" },
-        { key: ["屠夫刀"], loc: "後B7", name: "屠夫刀" },
-         { key: ["ba359印地安斧頭"], loc: "後B7", name: "ba359印地安斧頭" },
-        { key: ["忍者鞋"], loc: "後B8", name: "忍者鞋" },
-        { key: ["雷神槌"], loc: "後B9", name: "雷神槌" },
-        { key: ["財神爺帽"], loc: "後B10", name: "財神爺帽" },
-        { key: ["黑魔女頭套"], loc: "後C1", name: "黑魔女頭套" },
-        { key: ["梅杜莎頭飾"], loc: "後C2", name: "梅杜莎頭飾" },
-        { key: ["亡靈面具"], loc: "後C2", name: "亡靈面具" },
-        { key: ["BB645"], loc: "後C2", name: "BB645" },
-        { key: ["BB442"], loc: "後C2", name: "BB442" },
-        { key: ["BB632"], loc: "後C2", name: "BB632" },
-        { key: ["BB624"], loc: "後C2", name: "BB624" },
-        { key: ["BB808"], loc: "後C2", name: "BB808" },
-        { key: ["BB436"], loc: "後C2", name: "BB436" },
-        { key: ["BB447"], loc: "後C2", name: "BB447" },
-        { key: ["BB393"], loc: "後C2", name: "BB393" },
-        { key: ["AN24"], loc: "後C2", name: "AN24" },
-        { key: ["BB646"], loc: "後C2", name: "BB646" },
-        { key: ["BB437"], loc: "後C2", name: "BB437" },
-        { key: ["國王冠"], loc: "後C3", name: "國王冠" },
-        { key: ["國王權杖"], loc: "後C3", name: "國王權杖" },
-        { key: ["台灣警察帽"], loc: "後C4", name: "台灣警察帽" },
-        { key: ["祭典扇"], loc: "後C5", name: "祭典扇" },
-        { key: ["韓國扇"], loc: "後C5", name: "韓國扇" },
-        { key: ["日本扇"], loc: "後C5", name: "日本扇" },
-        { key: ["中式扇"], loc: "後C5", name: "中式扇" },
-        { key: ["法老帽"], loc: "後C6", name: "法老帽" },
-        { key: ["黑高帽"], loc: "後C6", name: "黑高帽" },
-        { key: ["阿拉丁帽"], loc: "後C6", name: "阿拉丁帽" },
-        { key: ["斧頭幫帽"], loc: "後C6", name: "斧頭幫帽" },
-        { key: ["觀世音頭飾"], loc: "後C7", name: "觀世音頭飾" },
-        { key: ["濟公扇"], loc: "後C8", name: "濟公扇" },
-        { key: ["孔明扇"], loc: "後C8", name: "孔明扇" },
-        { key: ["日月扇"], loc: "後C8", name: "日月扇" },
-        { key: ["一般沙鈴"], loc: "後C8", name: "一般沙鈴" },
-        { key: ["阿拉蕾大便"], loc: "後C8", name: "阿拉蕾大便" },
-        { key: ["ab1639人造人20號帽"], loc: "後C9", name: "ab1639人造人20號帽" },
-        { key: ["ba127美金披肩"], loc: "後C9", name: "ba127美金披肩" },
-        { key: ["ba165錢袋"], loc: "後C9", name: "ba165錢袋" },
-        { key: ["ba356猴子"], loc: "後C9", name: "ba356猴子" },
-        { key: ["死侍硬頭套"], loc: "後C9", name: "死侍硬頭套" },
-        { key: ["C-3PO備用半罩面具"], loc: "後C9", name: "C-3PO備用半罩面具" },
-        { key: ["CD117"], loc: "後C10", name: "CD117" },
-        { key: ["BB647"], loc: "後C10", name: "BB647" },
-        { key: ["CDZ159"], loc: "後C10", name: "CDZ159" },
-        { key: ["CD49"], loc: "後C10", name: "CD49" },
-        { key: ["BB650"], loc: "後C10", name: "BB650" },
-        { key: ["小學生帽"], loc: "後C11", name: "小學生帽" },
-        { key: ["印地安帽"], loc: "後C11", name: "印地安帽" },
-        { key: ["BB401"], loc: "後C11", name: "BB401" },
-        { key: ["男洛基頭"], loc: "後C12", name: "男洛基頭" },
-        { key: ["女洛基頭"], loc: "後C12", name: "女洛基頭" },
-        { key: ["AB4364備用頭"], loc: "後C12", name: "AB4364備用頭" },
-        { key: ["金鋼狼爪"], loc: "後C12", name: "金鋼狼爪" },
-        { key: ["萬磁王EVA頭"], loc: "後C12", name: "萬磁王EVA頭" },
-        { key: ["海拉肩甲"], loc: "後C12", name: "海拉肩甲" },
-        { key: ["牛仔槍套"], loc: "後C13", name: "牛仔槍套" },
-        { key: ["復古宮廷帽"], loc: "後C13", name: "復古宮廷帽" },
-        { key: ["bb426"], loc: "後C13", name: "bb426" },
-        { key: ["性轉帽客"], loc: "後C13", name: "性轉帽客" },
-        { key: ["訓獸師帽"], loc: "後C14", name: "訓獸師帽" },
-        { key: ["AB3371米蘭達武器"], loc: "後C14", name: "AB3371米蘭達武器" },
-        { key: ["接待員帽"], loc: "後C14", name: "接待員帽" },
-        { key: ["阿拉蕾帽"], loc: "後C14", name: "阿拉蕾帽" },
-        { key: ["計程車帽"], loc: "後C14", name: "計程車帽" },
-        { key: ["烏克麗麗"], loc: "後C14", name: "烏克麗麗" },
-        { key: ["仙桃"], loc: "後C15", name: "仙桃" },
-        { key: ["五虎將關雲長鬍子"], loc: "後C15", name: "五虎將關雲長鬍子" },
-        { key: ["無證騎士盔甲"], loc: "後D1", name: "無證騎士盔甲" },
-        { key: ["蝙蝠俠盔甲ab505"], loc: "後D2", name: "蝙蝠俠盔甲ab505" },
-        { key: ["傑諾斯盔甲"], loc: "後D3", name: "傑諾斯盔甲" },
-        { key: ["拜森盔甲"], loc: "後D4", name: "拜森盔甲" },
-        { key: ["ad8049羅馬戰士盔甲"], loc: "後D4", name: "ad8049羅馬戰士盔甲" },
-        { key: ["柯博文盔甲"], loc: "後D5", name: "柯博文盔甲" },
-        { key: ["BC88黑死牟"], loc: "D前天花板下", name: "BC88黑死牟" },
-        { key: ["BA325DVA槍"], loc: "D前天花板下", name: "BA325DVA槍" },
-        { key: ["BB467烏爾奇奧拉"], loc: "D前天花板下", name: "BB467烏爾奇奧拉" },
-        { key: ["二郎神頭"], loc: "D前天花板下", name: "二郎神頭" },
-        { key: ["BB477"], loc: "D前天花板下", name: "BB477" },
-        { key: ["志玲姐姐頭飾"], loc: "D後天花板下", name: "志玲姐姐頭飾" },
-        { key: ["印地安帽大版BB369"], loc: "D後天花板下", name: "印地安帽大版BB369" },
-        { key: ["愛德華剪刀手"], loc: "D後天花板下", name: "愛德華剪刀手" },
-        { key: ["AE665李火旺道具"], loc: "D後天花板下", name: "AE665李火旺道具" },
-        { key: ["BB475人魚頭飾"], loc: "C前天花板", name: "BB475人魚頭飾" },
-        { key: ["怪獸八號面具"], loc: "C前天花板", name: "怪獸八號面具" },
-        { key: ["AE116帶土面具"], loc: "C前天花板", name: "AE116帶土面具" },
-        { key: ["AE1429鱗瀧面具"], loc: "C前天花板", name: "AE1429鱗瀧面具" },
-        { key: ["BA308閃電"], loc: "C後天花板", name: "BA308閃電" },
-        { key: ["BA180星月棒"], loc: "C後天花板", name: "BA180星月棒" },
-        { key: ["BC89猗窩座面具"], loc: "C後天天板", name: "BC89猗窩座面具" },
-        { key: ["神燈精靈面具"], loc: "C後天花板", name: "神燈精靈面具" },
-        { key: ["BC78鍛刀人白黑面具"], loc: "C後天花板", name: "BC78鍛刀人白黑面具" },
-        { key: ["AE404槍"], loc: "B後天花板", name: "AE404槍" },
-        { key: ["AE510頭飾短槍"], loc: "B後天花板", name: "AE510頭飾短槍" },
-        { key: ["AE779殺生丸盔甲"], loc: "B後天花板", name: "AE779殺生丸盔甲" },
-        { key: ["CD130千里眼面具"], loc: "B後天花板", name: "CD130千里眼面具" },
-        { key: ["AE117阿飛面具"], loc: "B後天花板", name: "AE117阿飛面具" },
-        { key: ["AE10布魯克面具"], loc: "B後天花板", name: "AE10布魯克面具" },
-        { key: ["AE1406妮莉艾露面具"], loc: "B後天花板", name: "AE1406妮莉艾露面具" },
-        { key: ["AE1341高倉健升級面具"], loc: "B後天花板", name: "AE1341高倉健升級面具" },
-        { key: ["AE1113克洛克達爾手勾"], loc: "B後天花板", name: "AE1113克洛克達爾手勾" },
-        { key: ["AH2053面具"], loc: "A後天花板", name: "AH2053面具" },
-        { key: ["CD64彌勒佛面具"], loc: "A後天花板", name: "CD64彌勒佛面具" },
-        { key: ["As35-1模仿犯Noh"], loc: "A後天花板", name: "As35-1模仿犯Noh" },
-        { key: ["CD213靡道人面具"], loc: "A後天花板", name: "CD213靡道人面具" }
-    ];
+    // 資料庫內容保持不變
+    const database = [
+        { key: ["小竹"], loc: "我心裡", name: "小竹" },
+        { key: ["YT"], loc: "垃圾桶", name: "YT" },
+        { key: ["BA8998"], loc: "後B1", name: "BA8998", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA8998.jpg" },
+        { key: ["BA8999"], loc: "後B1", name: "BA8999", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA8999.jpg" },
+        { key: ["BA9000"], loc: "後B1", name: "BA9000", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA9000.jpg" },
+        { key: ["BA9991"], loc: "後B1", name: "BA9991", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA9991.jpg" },
+        { key: ["ab1729艾米達拉頭飾"], loc: "前A1", name: "ab1729艾米達拉頭飾", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB1729-1.jpg" },
+        { key: ["bc0035備用黑武士頭"], loc: "前A2", name: "bc0035備用黑武士頭" },
+        { key: ["備用暴風兵頭"], loc: "前A2", name: "備用暴風兵頭" },
+        { key: ["ba0620子彈肩帶"], loc: "前A3", name: "ba0620子彈肩帶", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0620.jpg" },
+        { key: ["ba0621子彈腰帶"], loc: "前A3", name: "ba0621子彈腰帶", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0621.jpg" },
+        { key: ["ba0141防毒面具"], loc: "前A3", name: "ba0141防毒面具", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0141.jpg" },
+        { key: ["拳擊手套"], loc: "前A4", name: "拳擊手套", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/02/BA0206-2.jpg" },
+        { key: ["金銀彩球"], loc: "前A5", name: "金銀彩球", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0674.jpg" },
+        { key: ["紅粉彩球"], loc: "前A6", name: "紅粉彩球", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0674.jpg" },
+        { key: ["藍綠彩球"], loc: "前A7", name: "藍綠彩球", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BA0674.jpg" },
+        { key: ["AB3372武器"], loc: "前A8", name: "AB3372武器", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/AB3372-1.jpg" },
+        { key: ["水行俠腰甲"], loc: "前A8", name: "水行俠腰甲", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB0611-1.jpg" },
+        { key: ["水行俠護腕"], loc: "前A8", name: "水行俠護腕", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB0611-1.jpg" },
+        { key: ["胡迪牛仔帽"], loc: "前B1", name: "胡迪牛仔帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2024/01/AB0897.jpg" },
+        { key: ["翠絲牛仔帽"], loc: "前B1", name: "翠絲牛仔帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB0905.jpg" },
+        { key: ["棕棘皮牛仔帽"], loc: "前B1", name: "棕棘皮牛仔帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AB0907.jpg" },
+        { key: ["紅棘皮牛仔帽"], loc: "前B2", name: "紅棘皮牛仔帽" },
+        { key: ["粉牛仔帽"], loc: "前B2", name: "粉牛仔帽" },
+        { key: ["員外帽"], loc: "前B3", name: "員外帽" },
+        { key: ["BB0658"], loc: "前B4", name: "BB0658", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2026/02/BB0658.jpg" },
+        { key: ["BB0634"], loc: "前B4", name: "BB0634", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BB0634-1.jpg" },
+        { key: ["BB0635"], loc: "前B4", name: "BB0635", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2023/03/BB0635-1.jpg" },
+        { key: ["紅心皇后帽"], loc: "前B4", name: "紅心皇后帽" },
+        { key: ["護士帽"], loc: "前B5", name: "護士帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2024/12/AH2065.jpg" },
+        { key: ["水手帽"], loc: "前B5", name: "水手帽", img: "https://self.supermanbooth.com.tw/wp-content/uploads/2022/12/AP6583-1.jpg" },
+        { key: ["殭屍普帽"], loc: "前B6", name: "殭屍普帽" },
+        { key: ["教官帽"], loc: "前B7", name: "教官帽" },
+        { key: ["軍閥帽"], loc: "前B7", name: "軍閥帽" },
+        { key: ["魯夫帽"], loc: "前B8", name: "魯夫帽" },
+        { key: ["蘇菲帽"], loc: "前B8", name: "蘇菲帽" },
+        { key: ["ae0730莎莉娜帽"], loc: "前B8", name: "ae0730莎莉娜帽" },
+        { key: ["AE0730"], loc: "前B8", name: "AE0730" },
+        { key: ["羅帽子"], loc: "前B8", name: "羅帽子" },
+        { key: ["艾斯帽子"], loc: "前B8", name: "艾斯帽子" },
+        { key: ["中川帽子"], loc: "前B8", name: "中川帽子" },
+        { key: ["紅短內襯裙"], loc: "前B9", name: "紅短內襯裙" },
+        { key: ["白短內襯裙"], loc: "前B9", name: "白短內襯裙" },
+        { key: ["金銀粉黑亮片帽"], loc: "前B10", name: "金銀粉黑亮片帽" },
+        { key: ["特種部隊頭盔"], loc: "前B11", name: "特種部隊頭盔" },
+        { key: ["萬磁王"], loc: "前B11", name: "萬磁王" },
+        { key: ["拜森帽"], loc: "前B11", name: "拜森帽" },
+        { key: ["花子君帽"], loc: "前B11", name: "花子君帽" },
+        { key: ["弗萊迪帽"], loc: "前B11", name: "弗萊迪帽" },
+        { key: ["月光刑警"], loc: "前B11", name: "月光刑警" },
+        { key: ["bb0012料理鼠王"], loc: "前B11", name: "bb0012料理鼠王" },
+        { key: ["女機長帽"], loc: "前B11", name: "女機長帽" },
+        { key: ["界王頭"], loc: "前B11", name: "界王頭" },
+        { key: ["龜殼"], loc: "前B12", name: "龜殼" },
+        { key: ["上海灘黑棕帽"], loc: "前C1", name: "上海灘黑棕帽" },
+        { key: ["黑手黨帽"], loc: "前C1", name: "黑手黨帽" },
+        { key: ["茱蒂帽"], loc: "前C2", name: "茱蒂帽" },
+        { key: ["機長帽"], loc: "前C3", name: "機長帽" },
+        { key: ["上海灘其他色"], loc: "前C4", name: "上海灘其他色" },
+        { key: ["布女警帽"], loc: "前C5", name: "布女警帽" },
+        { key: ["皮女警帽"], loc: "前C6", name: "皮女警帽" },
+        { key: ["女海關白帽"], loc: "前C7", name: "女海關白帽" },
+        { key: ["紅藍空姐帽"], loc: "前C7", name: "紅藍空姐帽" },
+        { key: ["酒紅色空姐帽"], loc: "前C8", name: "酒紅色空姐帽" },
+        { key: ["濟公帽"], loc: "前C9", name: "濟公帽" },
+        { key: ["屎伯帽"], loc: "前C9", name: "屎伯帽" },
+        { key: ["大便帽"], loc: "前C9", name: "大便帽" },
+        { key: ["蒙古帽一頂"], loc: "前C9", name: "蒙古帽一頂" },
+        { key: ["包租公包子籠"], loc: "前C9", name: "包租公包子籠" },
+        { key: ["卡蹦公爵"], loc: "前C9", name: "卡蹦公爵" },
+        { key: ["椰殼沙鈴"], loc: "前C9", name: "椰殼沙鈴" },
+        { key: ["葫蘆"], loc: "前C10", name: "葫蘆" },
+        { key: ["黃昏帽"], loc: "前C10", name: "黃昏帽" },
+        { key: ["瘋帽客大小帽"], loc: "前C10", name: "瘋帽客大小帽" },
+        { key: ["兔子先生"], loc: "前C10", name: "兔子先生" },
+        { key: ["暗黑帽客"], loc: "前C10", name: "暗黑帽客" },
+        { key: ["歐美男警"], loc: "前C11", name: "歐美男警" },
+        { key: ["男海關"], loc: "前C11", name: "男海關" },
+        { key: ["男海軍"], loc: "前C11", name: "男海軍" },
+        { key: ["德軍軍官帽"], loc: "前C12", name: "德軍軍官帽" },
+        { key: ["鏈鋸惡魔"], loc: "前D1", name: "鏈鋸惡魔" },
+        { key: ["小滴凸眼魚"], loc: "前D2", name: "小滴凸眼魚" },
+        { key: ["炸彈惡魔"], loc: "前D3", name: "炸彈惡魔" },
+        { key: ["八仙道具"], loc: "前D4", name: "八仙道具" },
+        { key: ["小彈簧狗"], loc: "前D5", name: "小彈簧狗" },
+        { key: ["aw5079佩羅那頭飾"], loc: "前D6", name: "aw5079佩羅那頭飾" },
+        { key: ["ab4278特瑞帽"], loc: "前D6", name: "ab4278特瑞帽" },
+        { key: ["AB4257末日博士"], loc: "前D6", name: "AB4257末日博士" },
+        { key: ["ba0041國定殺戮"], loc: "前D6", name: "ba0041國定殺戮" },
+        { key: ["ab4316暗黑紅心頭"], loc: "前D6", name: "ab4316暗黑紅心頭" },
+        { key: ["ba0271波克比"], loc: "前D6", name: "ba0271波克比" },
+        { key: ["ah2101面具"], loc: "前D6", name: "ah2101面具" },
+        { key: ["ae840綠谷頸環"], loc: "前D7", name: "ae840綠谷頸環" },
+        { key: ["ae404瑞貝卡頭飾"], loc: "前D7", name: "ae404瑞貝卡頭飾" },
+        { key: ["ab3372蒂米斯特雷庫夫人"], loc: "前D7", name: "ab3372蒂米斯特雷庫夫人" },
+        { key: ["ab3335v怪客"], loc: "前D7", name: "ab3335v怪客" },
+        { key: ["aw5508綾瀨星子"], loc: "前D7", name: "aw5508綾瀨星子" },
+        { key: ["ae846渡我被身子裝備"], loc: "前D9", name: "ae846渡我被身子裝備" },
+        { key: ["ba0135炭治郎箱子"], loc: "前D10", name: "ba0135炭治郎箱子" },
+        { key: ["備用黑武士頭"], loc: "前D10", name: "備用黑武士頭" },
+        { key: ["備用白兵頭"], loc: "前D10", name: "備用白兵頭" },
+        { key: ["ab0581"], loc: "前D11", name: "ab0581" },
+        { key: ["黑大短襯裙"], loc: "後A1", name: "黑大短襯裙" },
+        { key: ["紫大短襯裙"], loc: "後A1", name: "紫大短襯裙" },
+        { key: ["粉大短襯裙"], loc: "後A1", name: "粉大短襯裙" },
+        { key: ["藍小短襯裙"], loc: "後A2", name: "藍小短襯裙" },
+        { key: ["綠小短襯裙"], loc: "後A2", name: "綠小短襯裙" },
+        { key: ["黑小短襯裙"], loc: "後A3", name: "黑小短襯裙" },
+        { key: ["AW3029"], loc: "後A4", name: "AW3029" },
+        { key: ["AW3037"], loc: "後A4", name: "AW3037" },
+        { key: ["AW3036"], loc: "後A5", name: "AW3036" },
+        { key: ["AW3026"], loc: "後A5", name: "AW3026" },
+        { key: ["AW3023"], loc: "後A5", name: "AW3023" },
+        { key: ["AW3011"], loc: "後A6", name: "AW3011" },
+        { key: ["AW3012"], loc: "後A6", name: "AW3012" },
+        { key: ["AW3006"], loc: "後A6", name: "AW3006" },
+        { key: ["AW3032"], loc: "後A6", name: "AW3032" },
+        { key: ["AW3023"], loc: "後A6", name: "AW3023" },
+        { key: ["AW3031"], loc: "後A6", name: "AW3031" },
+        { key: ["AW3019"], loc: "後A6", name: "AW3019" },
+        { key: ["AW3030"], loc: "後A6", name: "AW3030" },
+        { key: ["AW3034"], loc: "後A6", name: "AW3034" },
+        { key: ["粉小短襯裙"], loc: "後A7", name: "粉小短襯裙" },
+        { key: ["紅小短襯裙"], loc: "後A7", name: "紅小短襯裙" },
+        { key: ["AW3035"], loc: "後A8", name: "AW3035" },
+        { key: ["AW3021"], loc: "後A8", name: "AW3021" },
+        { key: ["人面獅身AN40頭"], loc: "後A8", name: "人面獅身AN40頭" },
+        { key: ["BB0828阿努比斯頭"], loc: "後A9", name: "BB0828阿努比斯頭" },
+        { key: ["BB0826"], loc: "後A9", name: "BB0826" },
+        { key: ["AN28埃及天使"], loc: "後A9", name: "AN28埃及天使" },
+        { key: ["泰國小帽"], loc: "後A10", name: "泰國小帽" },
+        { key: ["泰國大帽"], loc: "後A11", name: "泰國大帽" },
+        { key: ["假肚子"], loc: "後A12", name: "假肚子" },
+        { key: ["肌肉片"], loc: "後A13", name: "肌肉片" },
+        { key: ["假奶"], loc: "後A13", name: "假奶" },
+        { key: ["羅馬帽"], loc: "後A14", name: "羅馬帽" },
+        { key: ["精靈翅膀"], loc: "後B2", name: "精靈翅膀" },
+        { key: ["蝴蝶翅膀"], loc: "後B2", name: "蝴蝶翅膀" },
+        { key: ["白羽毛翅膀"], loc: "後B2", name: "白羽毛翅膀" },
+        { key: ["黑羽毛翅膀"], loc: "後B2", name: "黑羽毛翅膀" },
+        { key: ["威利旺卡帽"], loc: "後B3", name: "威利旺卡帽" },
+        { key: ["怪盜基德帽"], loc: "後B3", name: "怪盜基德帽" },
+        { key: ["鞋貓劍客帽"], loc: "後B3", name: "鞋貓劍客帽" },
+        { key: ["麥可傑克森帽"], loc: "後B3", name: "麥可傑克森帽" },
+        { key: ["賈方"], loc: "後B4", name: "賈方" },
+        { key: ["神燈女精靈"], loc: "後B4", name: "神燈女精靈" },
+        { key: ["黑帝斯"], loc: "後B4", name: "黑帝斯" },
+        { key: ["勘探員帽"], loc: "後B4", name: "勘探員帽" },
+        { key: ["瑞克帽"], loc: "後B4", name: "瑞克帽" },
+        { key: ["邦比艾塔帽"], loc: "後B4", name: "邦比艾塔帽" },
+        { key: ["夢遺大師"], loc: "後B4", name: "夢遺大師" },
+        { key: ["賽伯星頭"], loc: "後B5", name: "賽伯星頭" },
+        { key: ["海盜帽"], loc: "後B6", name: "海盜帽" },
+        { key: ["咖啡宮廷帽"], loc: "後B6", name: "咖啡宮廷帽" },
+        { key: ["卡其色宮廷帽"], loc: "後B6", name: "卡其色宮廷帽" },
+        { key: ["黑宮廷帽"], loc: "後B6", name: "黑宮廷帽" },
+        { key: ["開山刀"], loc: "後B7", name: "開山刀" },
+        { key: ["小鐮刀"], loc: "後B7", name: "小鐮刀" },
+        { key: ["屠夫刀"], loc: "後B7", name: "屠夫刀" },
+         { key: ["ba359印地安斧頭"], loc: "後B7", name: "ba359印地安斧頭" },
+        { key: ["忍者鞋"], loc: "後B8", name: "忍者鞋" },
+        { key: ["雷神槌"], loc: "後B9", name: "雷神槌" },
+        { key: ["財神爺帽"], loc: "後B10", name: "財神爺帽" },
+        { key: ["黑魔女頭套"], loc: "後C1", name: "黑魔女頭套" },
+        { key: ["梅杜莎頭飾"], loc: "後C2", name: "梅杜莎頭飾" },
+        { key: ["亡靈面具"], loc: "後C2", name: "亡靈面具" },
+        { key: ["BB0645"], loc: "後C2", name: "BB0645" },
+        { key: ["BB0442"], loc: "後C2", name: "BB0442" },
+        { key: ["BB0632"], loc: "後C2", name: "BB0632" },
+        { key: ["BB0624"], loc: "後C2", name: "BB0624" },
+        { key: ["BB0808"], loc: "後C2", name: "BB0808" },
+        { key: ["BB0436"], loc: "後C2", name: "BB0436" },
+        { key: ["BB0447"], loc: "後C2", name: "BB0447" },
+        { key: ["BB0393"], loc: "後C2", name: "BB0393" },
+        { key: ["AN0024"], loc: "後C2", name: "AN0024" },
+        { key: ["BB0646"], loc: "後C2", name: "BB0646" },
+        { key: ["BB0437"], loc: "後C2", name: "BB0437" },
+        { key: ["國王冠"], loc: "後C3", name: "國王冠" },
+        { key: ["國王權杖"], loc: "後C3", name: "國王權杖" },
+        { key: ["台灣警察帽"], loc: "後C4", name: "台灣警察帽" },
+        { key: ["祭典扇"], loc: "後C5", name: "祭典扇" },
+        { key: ["韓國扇"], loc: "後C5", name: "韓國扇" },
+        { key: ["日本扇"], loc: "後C5", name: "日本扇" },
+        { key: ["中式扇"], loc: "後C5", name: "中式扇" },
+        { key: ["法老帽"], loc: "後C6", name: "法老帽" },
+        { key: ["黑高帽"], loc: "後C6", name: "黑高帽" },
+        { key: ["阿拉丁帽"], loc: "後C6", name: "阿拉丁帽" },
+        { key: ["斧頭幫帽"], loc: "後C6", name: "斧頭幫帽" },
+        { key: ["觀世音頭飾"], loc: "後C7", name: "觀世音頭飾" },
+        { key: ["濟公扇"], loc: "後C8", name: "濟公扇" },
+        { key: ["孔明扇"], loc: "後C8", name: "孔明扇" },
+        { key: ["日月扇"], loc: "後C8", name: "日月扇" },
+        { key: ["一般沙鈴"], loc: "後C8", name: "一般沙鈴" },
+        { key: ["阿拉蕾大便"], loc: "後C8", name: "阿拉蕾大便" },
+        { key: ["ab1639人造人20號帽"], loc: "後C9", name: "ab1639人造人20號帽" },
+        { key: ["ba0127美金披肩"], loc: "後C9", name: "ba0127美金披肩" },
+        { key: ["ba0165錢袋"], loc: "後C9", name: "ba0165錢袋" },
+        { key: ["ba0356猴子"], loc: "後C9", name: "ba0356猴子" },
+        { key: ["死侍硬頭套"], loc: "後C9", name: "死侍硬頭套" },
+        { key: ["C-3PO備用半罩面具"], loc: "後C9", name: "C-3PO備用半罩面具" },
+        { key: ["CD0117"], loc: "後C10", name: "CD117" },
+        { key: ["BB0647"], loc: "後C10", name: "BB647" },
+        { key: ["CDZ159"], loc: "後C10", name: "CDZ159" },
+        { key: ["CD0049"], loc: "後C10", name: "CD49" },
+        { key: ["BB0650"], loc: "後C10", name: "BB650" },
+        { key: ["小學生帽"], loc: "後C11", name: "小學生帽" },
+        { key: ["印地安帽"], loc: "後C11", name: "印地安帽" },
+        { key: ["BB0401"], loc: "後C11", name: "BB0401" },
+        { key: ["男洛基頭"], loc: "後C12", name: "男洛基頭" },
+        { key: ["女洛基頭"], loc: "後C12", name: "女洛基頭" },
+        { key: ["AB4364備用頭"], loc: "後C12", name: "AB4364備用頭" },
+        { key: ["金鋼狼爪"], loc: "後C12", name: "金鋼狼爪" },
+        { key: ["萬磁王EVA頭"], loc: "後C12", name: "萬磁王EVA頭" },
+        { key: ["海拉肩甲"], loc: "後C12", name: "海拉肩甲" },
+        { key: ["牛仔槍套"], loc: "後C13", name: "牛仔槍套" },
+        { key: ["復古宮廷帽"], loc: "後C13", name: "復古宮廷帽" },
+        { key: ["bb426"], loc: "後C13", name: "bb426" },
+        { key: ["性轉帽客"], loc: "後C13", name: "性轉帽客" },
+        { key: ["訓獸師帽"], loc: "後C14", name: "訓獸師帽" },
+        { key: ["AB3371米蘭達武器"], loc: "後C14", name: "AB3371米蘭達武器" },
+        { key: ["接待員帽"], loc: "後C14", name: "接待員帽" },
+        { key: ["阿拉蕾帽"], loc: "後C14", name: "阿拉蕾帽" },
+        { key: ["計程車帽"], loc: "後C14", name: "計程車帽" },
+        { key: ["烏克麗麗"], loc: "後C14", name: "烏克麗麗" },
+        { key: ["仙桃"], loc: "後C15", name: "仙桃" },
+        { key: ["五虎將關雲長鬍子"], loc: "後C15", name: "五虎將關雲長鬍子" },
+        { key: ["無證騎士盔甲"], loc: "後D1", name: "無證騎士盔甲" },
+        { key: ["蝙蝠俠盔甲ab505"], loc: "後D2", name: "蝙蝠俠盔甲ab505" },
+        { key: ["傑諾斯盔甲"], loc: "後D3", name: "傑諾斯盔甲" },
+        { key: ["拜森盔甲"], loc: "後D4", name: "拜森盔甲" },
+        { key: ["ad8049羅馬戰士盔甲"], loc: "後D4", name: "ad8049羅馬戰士盔甲" },
+        { key: ["柯博文盔甲"], loc: "後D5", name: "柯博文盔甲" },
+        { key: ["BC0088黑死牟"], loc: "D前天花板下", name: "BC0088黑死牟" },
+        { key: ["BA325DVA槍"], loc: "D前天花板下", name: "BA325DVA槍" },
+        { key: ["BB0467烏爾奇奧拉"], loc: "D前天花板下", name: "BB0467烏爾奇奧拉" },
+        { key: ["二郎神頭"], loc: "D前天花板下", name: "二郎神頭" },
+        { key: ["BB0477"], loc: "D前天花板下", name: "BB0477" },
+        { key: ["志玲姐姐頭飾"], loc: "D後天花板下", name: "志玲姐姐頭飾" },
+        { key: ["印地安帽大版BB0369"], loc: "D後天花板下", name: "印地安帽大版BB0369" },
+        { key: ["愛德華剪刀手"], loc: "D後天花板下", name: "愛德華剪刀手" },
+        { key: ["AE0665李火旺道具"], loc: "D後天花板下", name: "AE0665李火旺道具" },
+        { key: ["BB0475人魚頭飾"], loc: "C前天花板", name: "BB0475人魚頭飾" },
+        { key: ["怪獸八號面具"], loc: "C前天花板", name: "怪獸八號面具" },
+        { key: ["AE0116帶土面具"], loc: "C前天花板", name: "AE0116帶土面具" },
+        { key: ["AE1429鱗瀧面具"], loc: "C前天花板", name: "AE1429鱗瀧面具" },
+        { key: ["BA0308閃電"], loc: "C後天花板", name: "BA0308閃電" },
+        { key: ["BA0180星月棒"], loc: "C後天花板", name: "BA0180星月棒" },
+        { key: ["BC0089猗窩座面具"], loc: "C後天天板", name: "BC0089猗窩座面具" },
+        { key: ["神燈精靈面具"], loc: "C後天花板", name: "神燈精靈面具" },
+        { key: ["BC0078鍛刀人白黑面具"], loc: "C後天花板", name: "BC0078鍛刀人白黑面具" },
+        { key: ["AE0404槍"], loc: "B後天花板", name: "AE0404槍" },
+        { key: ["AE0510頭飾短槍"], loc: "B後天花板", name: "AE0510頭飾短槍" },
+        { key: ["AE0779殺生丸盔甲"], loc: "B後天花板", name: "AE0779殺生丸盔甲" },
+        { key: ["CD0130千里眼面具"], loc: "B後天花板", name: "CD0130千里眼面具" },
+        { key: ["AE0117阿飛面具"], loc: "B後天花板", name: "AE0117阿飛面具" },
+        { key: ["AE0010布魯克面具"], loc: "B後天花板", name: "AE0010布魯克面具" },
+        { key: ["AE1406妮莉艾露面具"], loc: "B後天花板", name: "AE1406妮莉艾露面具" },
+        { key: ["AE1341高倉健升級面具"], loc: "B後天花板", name: "AE1341高倉健升級面具" },
+        { key: ["AE1113克洛克達爾手勾"], loc: "B後天花板", name: "AE1113克洛克達爾手勾" },
+        { key: ["AH2053面具"], loc: "A後天花板", name: "AH2053面具" },
+        { key: ["CD0064彌勒佛面具"], loc: "A後天花板", name: "CD0064彌勒佛面具" },
+        { key: ["As0035-1模仿犯Noh"], loc: "A後天花板", name: "As0035-1模仿犯Noh" },
+        { key: ["CD0213靡道人面具"], loc: "A後天花板", name: "CD0213靡道人面具" }
+    ];
 
-function search() {
-        const inputStr = document.getElementById('sku').value.trim();
-        const resultArea = document.getElementById('resultArea');
-        if (!inputStr) return;
-        
-        const keywords = inputStr.split(/[#、，, \n\t]+/).map(s => s.trim().toLowerCase()).filter(s => s !== "");
-        resultArea.innerHTML = ""; 
+    function search() {
+        const inputStr = document.getElementById('sku').value.trim();
+        const resultArea = document.getElementById('resultArea');
+        if (!inputStr) return;
+        
+        const keywords = inputStr.split(/[#、，, \n\t]+/).map(s => s.trim().toLowerCase()).filter(s => s !== "");
+        resultArea.innerHTML = ""; 
+        
+        keywords.forEach(keyword => {
+            const matches = database.filter(item => {
+                const nameMatch = item.key.some(k => k.toLowerCase().includes(keyword));
+                const locMatch = item.loc.toLowerCase().includes(keyword);
+                return nameMatch || locMatch;
+            });
+            
+            if (matches.length > 0) {
+                matches.forEach(res => {
+                    const div = document.createElement('div');
+                    div.className = "result-item";
+                    
+                    div.onclick = function() {
+                        this.classList.toggle('active');
+                        if (navigator.vibrate) { navigator.vibrate(10); } 
+                    };
 
-        // 優化版正規化：把編號中的 0 全部拿掉來比對 (例如 bb0401 -> bb401, ba0620 -> ba620)
-        // 這樣管你打 bb000401 還是 bb401 都會變成 bb401
-        const simplify = (str) => {
-            return str.toLowerCase()
-                      .replace(/[^a-z0-9]/g, '') // 只留英文和數字
-                      .replace(/([a-z])0+([0-9])/g, '$1$2'); // 移除英文後面的開頭 0
-        };
+                    div.innerHTML = `
+                        <div class="result-main">
+                            <div class="res-info">
+                                <span class="res-name">📦 ${res.name}</span>
+                                <span class="res-loc">${res.loc}</span>
+                            </div>
+                            <button class="delete-btn" onclick="event.stopPropagation(); removeItem(this)">×</button>
+                        </div>
+                        ${res.img ? `<img src="${res.img}" class="res-img" loading="lazy">` : ''}
+                    `;
+                    resultArea.appendChild(div);
+                });
+            } else {
+                const div = document.createElement('div');
+                div.className = "no-result";
+                div.innerText = `找不到「${keyword}」啦 (´•̥ ᵔ •̥ \`)`;
+                resultArea.appendChild(div);
+            }
+        });
+        document.activeElement.blur();
+    }
 
-        keywords.forEach(keyword => {
-            const simpleKeyword = simplify(keyword);
+    function removeItem(btn) {
+        const item = btn.closest('.result-item');
+        item.classList.add('removing');
+        setTimeout(() => { item.remove(); }, 300);
+    }
 
-            const matches = database.filter(item => {
-                // 1. 先找有沒有完全包含字串
-                const lowerKeyword = keyword.toLowerCase();
-                const nameMatch = item.key.some(k => k.toLowerCase().includes(lowerKeyword));
-                const locMatch = item.loc.toLowerCase().includes(lowerKeyword);
-                
-                if (nameMatch || locMatch) return true;
-
-                // 2. 如果沒找到，啟動「模糊編號比對」
-                return item.key.some(k => {
-                    const simpleKey = simplify(k);
-                    // 只要簡化後的字串互相包含，就算對
-                    return simpleKey.includes(simpleKeyword) || simpleKeyword.includes(simpleKey);
-                });
-            });
-            
-            if (matches.length > 0) {
-                // 排除重複項目
-                const uniqueMatches = [...new Map(matches.map(item => [item.name + item.loc, item])).values()];
-                
-                uniqueMatches.forEach(res => {
-                    const div = document.createElement('div');
-                    div.className = "result-item";
-                    div.onclick = function() {
-                        this.classList.toggle('active');
-                        if (navigator.vibrate) { navigator.vibrate(10); } 
-                    };
-                    div.innerHTML = `
-                        <div class="result-main">
-                            <div class="res-info">
-                                <span class="res-name">📦 ${res.name}</span>
-                                <span class="res-loc">${res.loc}</span>
-                            </div>
-                            <button class="delete-btn" onclick="event.stopPropagation(); removeItem(this)">×</button>
-                        </div>
-                        ${res.img ? `<img src="${res.img}" class="res-img" loading="lazy">` : ''}
-                    `;
-                    resultArea.appendChild(div);
-                });
-            } else {
-                const div = document.createElement('div');
-                div.className = "no-result";
-                div.innerText = `找不到「${keyword}」啦 (´•̥ ᵔ •̥ \`)`;
-                resultArea.appendChild(div);
-            }
-        });
-        document.activeElement.blur();
-    }
-
-    function removeItem(btn) {
-        const item = btn.closest('.result-item');
-        item.classList.add('removing');
-        setTimeout(() => { item.remove(); }, 300);
-    }
-
-    document.getElementById('sku').addEventListener('keypress', e => { 
-        if (e.key === 'Enter') search(); 
-    });
+    document.getElementById('sku').addEventListener('keypress', e => { 
+        if (e.key === 'Enter') search(); 
+    });
 </script>
 
 </body>
